@@ -23,7 +23,7 @@ scd30 = adafruit_scd30.SCD30(board.I2C())
 scd30.ambient_pressure = clue.pressure
 
 text = "        "
-font = bitmap_font.load_font("/SourceSansPro-Black-42.bdf")
+font = bitmap_font.load_font("/SourceSansPro-Black-42.pcf")
 font.load_glyphs(b'ADEGINNOPRRW1234567890')
 color = 0xFFFFFF
 
