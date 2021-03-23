@@ -24,6 +24,7 @@ scd30.ambient_pressure = clue.pressure
 
 text = "        "
 font = bitmap_font.load_font("/SourceSansPro-Black-42.bdf")
+font.load_glyphs(b'ADEGINNOPRRW1234567890')
 color = 0xFFFFFF
 
 # current condition label
