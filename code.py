@@ -28,16 +28,16 @@ font.load_glyphs(b'ADEGINNOPRRW1234567890')
 color = 0xFFFFFF
 
 # current condition label
-text_label = label.Label(font, text=text, color=color, x=65, y=120)
+text_label = label.Label(font, text=text, color=color, x=65, y=140)
 # current CO2 value(good/poor/warning/danger)
-digits_label = label.Label(font, text=text, color=color, x=75, y=160)
+digits_label = label.Label(font, text=text, color=color, x=35, y=180)
 # current condition emoji
 bitmap, palette = adafruit_imageload.load("/emojis.bmp")
 emoji = displayio.TileGrid(
     bitmap,
     pixel_shader=palette,
     x=int((clue.display.width / 2) - 37),
-    y=3,
+    y=23,
     width=1,
     height=1,
     tile_width=72,
@@ -51,7 +51,7 @@ co2_group.append(digits_label)
 
 def update_display(value):
     value = abs(round(value))
-    digits_label.text = str(value)
+    digits_label.text = str(value) + " ppm"
 
     if value < CO2_CUTOFFS[0]:
         text_label.text = "GOOD"
