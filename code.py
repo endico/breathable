@@ -2,6 +2,7 @@
 # https://learn.adafruit.com/matrix-portal-room-co2-monitor
 # emojis from https://onlineunicodetools.com/convert-emoji-to-image
 # indexed bmp conversion at https://online-converting.com/image/convert2bmp/
+# https://learn.adafruit.com/adafruit-magtag-project-selector/code-run-through
 
 import time
 import board
@@ -11,11 +12,19 @@ from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text import label
 from adafruit_clue import clue
 import adafruit_scd30
+from digitalio import DigitalInOut, Direction, Pull
 
 # --| User Config |----
 CO2_CUTOFFS = (1000, 2000, 5000)
 UPDATE_RATE = 2
 # ---------------------
+
+blah = "BLAH"
+
+# if both buttons are pressed on startup then calibrate CO2 sensor
+if clue.button_a and clue.button_b:
+    __import__("calibrate")
+print("blah=", blah)
 
 # the SCD30 CO2 sensor
 # https://circuitpython.readthedocs.io/projects/scd30/en/latest/api.html
@@ -28,6 +37,7 @@ font.load_glyphs(b'ADEGINNOPRRW1234567890')
 color = 0xFFFFFF
 
 # current condition label
+print("blah=", blah)
 text_label = label.Label(font, text=text, color=color, x=65, y=140)
 # current CO2 value(good/poor/warning/danger)
 digits_label = label.Label(font, text=text, color=color, x=35, y=180)
