@@ -8,12 +8,11 @@ from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text import bitmap_label as label
 from adafruit_clue import clue
 import adafruit_scd30
-
-blah = "BLAH BLAH"
+import supervisor
 
 scd30 = adafruit_scd30.SCD30(board.I2C())
 font = bitmap_font.load_font("Exo-SemiBold-18.pcf")
-# font.load_glyphs(b'RPCabcdefghiklmnoqrstuwy1234567890,')
+font.load_glyphs(b'RPCabcdefghiklmnoqrstuwy1234567890,')
 color = 0xFFFFFF
 
 text_label = label.Label(
@@ -73,9 +72,8 @@ while initiation_timer > 0:
             wait_timer = wait_timer - 1
             time.sleep(1)
         timer_label.text = "0"
-
         scd30.forced_recalibration_reference = 400
         break
     time.sleep(0.25) # sleep while waiting to verify this wasn't accidental
 timer_label.text = "0"
-print("done calibrating")
+supervisor.reload()
