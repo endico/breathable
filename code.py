@@ -4,8 +4,6 @@
 # indexed bmp conversion at https://online-converting.com/image/convert2bmp/
 # https://learn.adafruit.com/adafruit-magtag-project-selector/code-run-through
 
-import gc
-print(f'gc.mem_free: after load gc {gc.mem_free()}')
 import time
 import board
 import displayio
@@ -21,20 +19,13 @@ CO2_CUTOFFS = (1000, 2000, 5000)
 UPDATE_RATE = 2
 # ---------------------
 
-gc.collect()
-print(f'gc.mem_free: before bitmap {gc.mem_free()}')
-
 # load bitmap early to make sure there is a large enough
 # chunk of memory before any fragmentation occurs
 bitmap, palette = adafruit_imageload.load("/emojis.bmp")
-gc.collect()
-print(f'gc.mem_free: after bitmap {gc.mem_free()}')
 
 # the SCD30 CO2 sensor
 # https://circuitpython.readthedocs.io/projects/scd30/en/latest/api.html
 scd30 = adafruit_scd30.SCD30(board.I2C())
-gc.collect()
-print(f'gc.mem_free: after scd30 load {gc.mem_free()}')
 
 # If both buttons are pressed at startup then calibrate the sensor.
 # Require user interaction to verify this wasn't accidental. If user
@@ -96,7 +87,6 @@ def calibrate():
             c_text_label.text = "Calibrating"
             c_timer_label.text = " "
             wait_timer = 180  # wait at least 2 minutes for air to clear
-            wait_timer = 3  # for testing
             while wait_timer > 0:
                 c_timer_label.text = str(wait_timer)
                 wait_timer = wait_timer - 1
@@ -106,25 +96,17 @@ def calibrate():
             break
         time.sleep(0.25)
     c_timer_label.text = "0"
-    del group
 ######################## End Calibrate Definition
 
 # if both buttons are pressed on startup then calibrate CO2 sensor
-gc.collect()
-print(f'gc.mem_free: before calibrate {gc.mem_free()}')
 if clue.button_a and clue.button_b:
     calibrate()
-gc.collect()
-print(f'gc.mem_free: after calibrate {gc.mem_free()}')
 
 scd30.ambient_pressure = clue.pressure
 
 font = bitmap_font.load_font("/SourceSansPro-Black-42.pcf")
 font.load_glyphs(b'ADEGINNOPRRW1234567890')
 color = 0xFFFFFF
-gc.collect()
-print(f'gc.mem_free: after fonts {gc.mem_free()}')
-
 
 # current condition label
 text_label = label.Label(font, color=color, x=65, y=140)
@@ -169,9 +151,6 @@ def update_display(value):
 
 update_display(scd30.CO2)
 clue.display.show(co2_group)
-gc.collect()
-print(f'gc.mem_free: before update_display loop {gc.mem_free()}')
-
 
 while True:
     if scd30.data_available:
